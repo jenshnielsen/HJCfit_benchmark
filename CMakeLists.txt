@@ -47,5 +47,5 @@ endif()
 
 add_executable(log10long log10long.cc)
 include_directories(${CMAKE_INSTALL_PREFIX}/include/dcprogs)
-find_library(liblikelihoodpath NAMES likelihood ${CMAKE_INSTALL_PREFIX}/lib)
+find_library(liblikelihoodpath NAMES likelihood HINTS ${CMAKE_INSTALL_PREFIX}/lib)
 target_link_libraries(log10long ${liblikelihoodpath})
