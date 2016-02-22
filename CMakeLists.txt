@@ -41,6 +41,6 @@ elseif (EXISTS $ENV{CONDA_ENV_PATH})
 endif()
 
 add_executable(log10long log10long.cc)
-include_directories(${CMAKE_INSTALL_PREFIX}/include)
+include_directories(${CMAKE_INSTALL_PREFIX}/include/dcprogs)
 link_directories(${CMAKE_INSTALL_PREFIX}/lib)
 target_link_libraries(log10long likelihood)
