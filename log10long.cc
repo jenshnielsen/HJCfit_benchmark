@@ -1,5 +1,5 @@
 #include <iostream>
-#include <likelihood/likelihood.h>
+#include <dcprogs/likelihood/likelihood.h>
 #include <DCProgsConfig.h>
 
 int main() {
