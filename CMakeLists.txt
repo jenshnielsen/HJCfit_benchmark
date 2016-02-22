@@ -34,6 +34,12 @@ if(EIGEN3_INCLUDE_DIR)
   include_directories(${EIGEN3_INCLUDE_DIR} ${PROJECT_BINARY_DIR})
 endif()
 
+if (EXISTS $ENV{VIRTUAL_ENV})
+  set(CMAKE_INSTALL_PREFIX "$ENV{VIRTUAL_ENV}" CACHE string "" FORCE)
+elseif (EXISTS $ENV{CONDA_ENV_PATH})
+    set(CMAKE_INSTALL_PREFIX "$ENV{CONDA_ENV_PATH}" CACHE string "" FORCE)
+endif()
+
 add_executable(log10long log10long.cc)
 target_link_libraries(log10long likelihood)
 include_directories(${CMAKE_INSTALL_PREFIX}/include/dcprogs)
