@@ -45,6 +45,8 @@ do
     aprun -n $NODES -d $threads time $BUILDDIR/log10long0 2>&1
     echo "Executing log10long1 with ${threads}"
     aprun -n $NODES -d $threads time $BUILDDIR/log10long1 2>&1
+    echo "Executing log10long0_simple with ${threads}"
+    aprun -n $NODES -d $threads time $BUILDDIR/log10long0_simple 2>&1
 done
 # Exit virtual env
 source deactivate
