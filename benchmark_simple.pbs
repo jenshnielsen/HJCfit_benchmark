@@ -1,0 +1,50 @@
+#!/bin/bash --login
+
+#PBS -N benchmarksimple
+#PBS -l select=1
+#PBS -l walltime=0:20:0
+#PBS -A ecse0506
+
+# Test configuration is good and longer jobs can be run no problem by submitting to the
+# short queue that runs jobs earlier. Remember 20 min time limit, and only Mon-Fri 9am-5pm
+# qsub -q short <path_to_this_file>
+
+# Set up a few variables to pass to aprun
+NODES=1
+SUFFIX=`date +"%Y%m%d_%H%M%S"`
+OUTPUT_DIR=$WORK/output/benchmark_simple/$SUFFIX
+LOGFILE=$OUTPUT_DIR/benchmark_simple
+BUILDDIR=$WORK/HJCfit_benchmark/build
+mkdir -p $OUTPUT_DIR
+
+# Make sure any symbolic links are resolved to absolute path
+export PBS_O_WORKDIR=$(readlink -f $PBS_O_WORKDIR)
+
+# The base directory is the directory that the job was submitted from.
+# All simulations are in subdirectories of this directory.
+basedir=$PBS_O_WORKDIR
+
+# This shifts to the directory that you submitted the job from
+cd $OUTPUT_DIR
+
+#Load all the necessary tools and set the work environment
+source $WORK/HJCFIT/utils/archer/loadArcherModules.sh
+
+# Load virtual env
+source activate dcprogs
+
+# Add virtual env path to LD_LIBRARY_PATH, otherwise it complains about not finding liblikelihood.so
+export LD_LIBRARY_PATH=$CONDA_ENV_PATH/lib:$LD_LIBRARY_PATH
+
+# Profile exploration data with 1 to 24 nodes. Time for each execution will be
+# outputted from the python code
+for threads in {1..24}
+do
+    export OMP_NUM_THREADS=$threads
+    echo "Executing log10long0 with ${threads}"
+    aprun -n $NODES -d $threads time $BUILDDIR/log10long0 2>&1
+    echo "Executing log10long1 with ${threads}"
+    aprun -n $NODES -d $threads time $BUILDDIR/log10long1 2>&1
+done
+# Exit virtual env
+source deactivate
