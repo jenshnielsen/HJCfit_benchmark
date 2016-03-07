@@ -2,6 +2,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6.4 FATAL_ERROR)
 
 PROJECT(HJCfit_benchmark)
 
+option(openmp         "Enable OpenMP parallelization."          off)
 # Set a default build type to Release if none was specified
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   set(CMAKE_BUILD_TYPE Release CACHE STRING "" FORCE)
