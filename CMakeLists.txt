@@ -20,6 +20,12 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
 include(LookUp-GreatCMakeCookOff)
 include(PackageLookup)
 
+if ( CMAKE_COMPILER_IS_GNUCC )
+  # W-deprecated-declarations is triggered several times by eigen code in C++11. We disable it here.
+  # This should be removed ones Eigen fixes this. Probably in Eigen V3.3
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations" CACHE STRING "" FORCE)
+endif ( CMAKE_COMPILER_IS_GNUCC )
+
 # Install Eigen the CookOff way
 lookup_package(Eigen3 REQUIRED)
 
